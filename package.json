@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "@sapphire/decorators": "^6.0.1",
+    "@sapphire/framework": "^4.4.3",
+    "@sapphire/time-utilities": "^1.7.9",
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.0.3",
+    "prisma": "^4.14.0"
+  },
+  "name": "kafka",
+  "version": "1.0.0",
+  "description": "Official Bot from Interstellaris Indonesia",
+  "main": "dist/index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "tsc --skipLibCheck && node ."
+  },
+  "keywords": [
+    "discord-bot",
+    "bot",
+    "discord"
+  ],
+  "author": "Zarr#2072",
+  "license": "MIT"
+}
