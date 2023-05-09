@@ -33,14 +33,19 @@ export class AboutCommand extends Command {
         const { user } = this.container.client;
         const guild: Guild = await this.container.client.guilds.fetch("1006143962714755122");
 
-        let devs: string[] = [];
-        for (const DevId of DeveloperIds) {
-            const user: User = await this.getUser(DevId);
-            devs.push(`> ${user.tag}`);
-        }
+        const devs: string[] = [
+            `> [${bold((await this.getUser(DeveloperIds[0])).tag)}](https://instagram.com/ravenxyzer)`,
+            `> [${bold((await this.getUser(DeveloperIds[1])).tag)}](https://github.com/aeviterna)`,
+        ];
+
+        const networkServers: string[] = [
+            `> [${bold("Genshin Impact ID")}](https://discord.gg/giid)`,
+            `> [${bold("Nolep Gang's")}](https://discord.gg/BPQBmwTemY)`,
+            `> [${bold("Simps Waifu Community")}](https://discord.gg/simpswaifu)`,
+        ];
 
         const embed: EmbedBuilder = new EmbedBuilder()
-            .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ size: 1024 }) })
+            .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 1024 }) })
             .setDescription(
                 `All-multi purpose Discord bot & Honkai: Star Rail related from [${bold(
                     guild.name
@@ -48,7 +53,7 @@ export class AboutCommand extends Command {
             )
             .addFields([
                 { name: "⊰・Developers・⊱", value: devs.join("\n") },
-                { name: "⊰・Network Server・⊱", value: `> [Genshin Impact ID](https://discord.gg/giid)` },
+                { name: "⊰・Network Servers・⊱", value: networkServers.join("\n") },
             ])
             .setColor("#960078");
 
@@ -57,13 +62,5 @@ export class AboutCommand extends Command {
 
     private async getUser(id: string): Promise<User> {
         return await this.container.client.users.fetch(id);
-    }
-
-    private async getGuildCount() {
-        return `> ${this.container.client.guilds.cache.size} Servers`;
-    }
-
-    private async getUserCount() {
-        return `> ${this.container.client.users.cache.size} Users`;
     }
 }

@@ -43,17 +43,21 @@ let AboutCommand = class AboutCommand extends framework_1.Command {
         return __awaiter(this, void 0, void 0, function* () {
             const { user } = this.container.client;
             const guild = yield this.container.client.guilds.fetch("1006143962714755122");
-            let devs = [];
-            for (const DevId of Constant_1.DeveloperIds) {
-                const user = yield this.getUser(DevId);
-                devs.push(`> ${user.tag}`);
-            }
+            const devs = [
+                `> [${(0, discord_js_1.bold)((yield this.getUser(Constant_1.DeveloperIds[0])).tag)}](https://instagram.com/ravenxyzer)`,
+                `> [${(0, discord_js_1.bold)((yield this.getUser(Constant_1.DeveloperIds[1])).tag)}](https://github.com/aeviterna)`,
+            ];
+            const networkServers = [
+                `> [${(0, discord_js_1.bold)("Genshin Impact ID")}](https://discord.gg/giid)`,
+                `> [${(0, discord_js_1.bold)("Nolep Gang's")}](https://discord.gg/BPQBmwTemY)`,
+                `> [${(0, discord_js_1.bold)("Simps Waifu Community")}](https://discord.gg/simpswaifu)`,
+            ];
             const embed = new discord_js_1.EmbedBuilder()
                 .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ size: 1024 }) })
                 .setDescription(`All-multi purpose Discord bot & Honkai: Star Rail related from [${(0, discord_js_1.bold)(guild.name)}](https://bit.ly/stellaris-indo). Join us and enhance the experience of playing Honkai: Star Rail and strengthen friendships in the wider game community.`)
                 .addFields([
                 { name: "⊰・Developers・⊱", value: devs.join("\n") },
-                { name: "⊰・Network Server・⊱", value: `> [Genshin Impact ID](https://discord.gg/giid)` },
+                { name: "⊰・Network Server・⊱", value: networkServers.join("\n") },
             ])
                 .setColor("#960078");
             return [embed];
