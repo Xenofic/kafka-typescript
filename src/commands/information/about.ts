@@ -1,8 +1,8 @@
 import { Command, RegisterBehavior } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
-import { EmbedBuilder, Guild, InteractionResponse, Message, SlashCommandBuilder, User, bold } from "discord.js";
+import { EmbedBuilder, Emoji, Guild, InteractionResponse, Message, SlashCommandBuilder, User, bold } from "discord.js";
 
-import { DeveloperIds } from "../../lib/Constant";
+import { DeveloperIds, Emojis } from "../../lib/Constant";
 
 @ApplyOptions<Command.Options>({
     name: "about",
@@ -44,6 +44,8 @@ export class AboutCommand extends Command {
             `> [${bold("Simps Waifu Community")}](https://discord.gg/simpswaifu)`,
         ];
 
+        const socialMedia: string[] = [`> ${Emojis.instagram}・[${bold("@honkaistar.indo")}](https://instagram.com/honkaistar.indo)`];
+
         const embed: EmbedBuilder = new EmbedBuilder()
             .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 1024 }) })
             .setDescription(
@@ -54,6 +56,7 @@ export class AboutCommand extends Command {
             .addFields([
                 { name: "⊰・Developers・⊱", value: devs.join("\n") },
                 { name: "⊰・Network Servers・⊱", value: networkServers.join("\n") },
+                { name: "⊰・Social Media・⊱", value: socialMedia.join("\n") },
             ])
             .setColor("#960078");
 
