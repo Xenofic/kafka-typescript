@@ -19,6 +19,7 @@ exports.AboutCommand = void 0;
 const framework_1 = require("@sapphire/framework");
 const decorators_1 = require("@sapphire/decorators");
 const discord_js_1 = require("discord.js");
+const Constant_1 = require("../../lib/Constant");
 let AboutCommand = class AboutCommand extends framework_1.Command {
     registerApplicationCommands(registry) {
         const command = new discord_js_1.SlashCommandBuilder().setName(this.name).setDescription(this.description);
@@ -42,10 +43,35 @@ let AboutCommand = class AboutCommand extends framework_1.Command {
         return __awaiter(this, void 0, void 0, function* () {
             const { user } = this.container.client;
             const guild = yield this.container.client.guilds.fetch("1006143962714755122");
+            let devs = [];
+            for (const DevId of Constant_1.DeveloperIds) {
+                const user = yield this.getUser(DevId);
+                devs.push(`> ${user.tag}`);
+            }
             const embed = new discord_js_1.EmbedBuilder()
                 .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ size: 1024 }) })
-                .setDescription(`All-multi purpose Discord bot & Honkai: Star Rail related that developed by ${(0, discord_js_1.bold)("Zarr")} from [${(0, discord_js_1.bold)(guild.name)}](https://bit.ly/stellaris-indo).`);
+                .setDescription(`All-multi purpose Discord bot & Honkai: Star Rail related from [${(0, discord_js_1.bold)(guild.name)}](https://bit.ly/stellaris-indo). Join us and enhance the experience of playing Honkai: Star Rail and strengthen friendships in the wider game community.`)
+                .addFields([
+                { name: "⊰・Developers・⊱", value: devs.join("\n") },
+                { name: "⊰・Network Server・⊱", value: `> [Genshin Impact ID](https://discord.gg/giid)` },
+            ])
+                .setColor("#960078");
             return [embed];
+        });
+    }
+    getUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.container.client.users.fetch(id);
+        });
+    }
+    getGuildCount() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `> ${this.container.client.guilds.cache.size} Servers`;
+        });
+    }
+    getUserCount() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `> ${this.container.client.users.cache.size} Users`;
         });
     }
 };
