@@ -53,11 +53,11 @@ let AboutCommand = class AboutCommand extends framework_1.Command {
                 `> [${(0, discord_js_1.bold)("Simps Waifu Community")}](https://discord.gg/simpswaifu)`,
             ];
             const embed = new discord_js_1.EmbedBuilder()
-                .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ size: 1024 }) })
+                .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 1024 }) })
                 .setDescription(`All-multi purpose Discord bot & Honkai: Star Rail related from [${(0, discord_js_1.bold)(guild.name)}](https://bit.ly/stellaris-indo). Join us and enhance the experience of playing Honkai: Star Rail and strengthen friendships in the wider game community.`)
                 .addFields([
                 { name: "⊰・Developers・⊱", value: devs.join("\n") },
-                { name: "⊰・Network Server・⊱", value: networkServers.join("\n") },
+                { name: "⊰・Network Servers・⊱", value: networkServers.join("\n") },
             ])
                 .setColor("#960078");
             return [embed];
@@ -66,16 +66,6 @@ let AboutCommand = class AboutCommand extends framework_1.Command {
     getUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.container.client.users.fetch(id);
-        });
-    }
-    getGuildCount() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return `> ${this.container.client.guilds.cache.size} Servers`;
-        });
-    }
-    getUserCount() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return `> ${this.container.client.users.cache.size} Users`;
         });
     }
 };

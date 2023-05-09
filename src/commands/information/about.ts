@@ -47,7 +47,7 @@ export class AboutCommand extends Command {
         const embed: EmbedBuilder = new EmbedBuilder()
             .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 1024 }) })
             .setDescription(
-                `All-multi purpose Discord bot & Honkai: Star Rail related from [${bold(
+                `All-multi purpose & Honkai: Star Rail related bot from [${bold(
                     guild.name
                 )}](https://bit.ly/stellaris-indo). Join us and enhance the experience of playing Honkai: Star Rail and strengthen friendships in the wider game community.`
             )
