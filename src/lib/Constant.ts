@@ -4,3 +4,5 @@ export const Emojis = {
     rigthArrow: "<:HSRI_Arrow_Right:1068714661333192724>",
     instagram: "<:ISID_Instagram:1105527817279656047>",
 };
+
+export const Presences: string[] = [];
