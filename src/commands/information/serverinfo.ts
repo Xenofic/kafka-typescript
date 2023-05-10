@@ -80,7 +80,7 @@ export class ServerInfoCommand extends Command {
             `⊱ Name            :  ${bio.name}`,
             `⊱ Server Id       :  ${bio.id}` + "ㅤ",
             `⊱ Time Created    :  ${bio.createdAt.format("MMM, DD YYYY")}`,
-            `⊱ Ownership       :  ${bio.ownership.username}`,
+            `⊱ Ownership       :  ${bio.ownership.tag}`,
         ];
 
         const stats: string[] = [
