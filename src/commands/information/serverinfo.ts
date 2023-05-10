@@ -73,7 +73,7 @@ export class ServerInfoCommand extends Command {
         };
     }
 
-    private async getFieldResponses(ctx: Command.ChatInputCommandInteraction | Message) {
+    private async getFieldResponses(ctx: Command.ChatInputCommandInteraction | Message): Promise<APIEmbedField[]> {
         const { bio, statistic, features } = await this.getServerInformation(ctx);
 
         const info: string[] = [

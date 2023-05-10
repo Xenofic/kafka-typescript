@@ -1,6 +1,6 @@
 import { Command, RegisterBehavior } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
-import { EmbedBuilder, Emoji, Guild, InteractionResponse, Message, SlashCommandBuilder, User, bold } from "discord.js";
+import { APIEmbedField, EmbedBuilder, Emoji, Guild, InteractionResponse, Message, SlashCommandBuilder, User, bold } from "discord.js";
 
 import { DeveloperIds, Emojis } from "../../lib/Constant";
 
@@ -31,36 +31,46 @@ export class AboutCommand extends Command {
 
     private async response(): Promise<EmbedBuilder[]> {
         const { user } = this.container.client;
+        const fieldResponses: APIEmbedField[] = await this.getFieldResponses();
+
         const guild: Guild = await this.container.client.guilds.fetch("1006143962714755122");
 
-        const devs: string[] = [
-            `> [${bold((await this.getUser(DeveloperIds[0])).tag)}](https://instagram.com/ravenxyzer)`,
-            `> [${bold((await this.getUser(DeveloperIds[1])).tag)}](https://github.com/aeviterna)`,
-        ];
-
-        const networkServers: string[] = [
-            `> [${bold("Genshin Impact ID")}](https://discord.gg/giid)`,
-            `> [${bold("Nolep Gang's")}](https://discord.gg/BPQBmwTemY)`,
-            `> [${bold("Simps Waifu Community")}](https://discord.gg/simpswaifu)`,
-        ];
-
-        const socialMedia: string[] = [`> ${Emojis.instagram}・[${bold("@honkaistar.indo")}](https://instagram.com/honkaistar.indo)`];
+        const description: string = `All-multi purpose & Honkai: Star Rail related bot from [${bold(
+            guild.name
+        )}](https://bit.ly/stellaris-indo). Join us and enhance the experience of playing Honkai: Star Rail and strengthen friendships in the wider game community.`;
 
         const embed: EmbedBuilder = new EmbedBuilder()
             .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 1024 }) })
-            .setDescription(
-                `All-multi purpose & Honkai: Star Rail related bot from [${bold(
-                    guild.name
-                )}](https://bit.ly/stellaris-indo). Join us and enhance the experience of playing Honkai: Star Rail and strengthen friendships in the wider game community.`
-            )
-            .addFields([
-                { name: "⊰・Developers・⊱", value: devs.join("\n") },
-                { name: "⊰・Network Servers・⊱", value: networkServers.join("\n") },
-                { name: "⊰・Social Media・⊱", value: socialMedia.join("\n") },
-            ])
+            .setDescription(description)
+            .addFields([...fieldResponses])
             .setColor("#960078");
 
         return [embed];
+    }
+
+    private async getDetails() {
+        return {
+            devs: [
+                `> [${bold((await this.getUser(DeveloperIds[0])).tag)}](https://instagram.com/ravenxyzer)`,
+                `> [${bold((await this.getUser(DeveloperIds[1])).tag)}](https://github.com/aeviterna)`,
+            ],
+            networkServers: [
+                `> [${bold("Genshin Impact ID")}](https://discord.gg/giid)`,
+                `> [${bold("Nolep Gang's")}](https://discord.gg/BPQBmwTemY)`,
+                `> [${bold("Simps Waifu Community")}](https://discord.gg/simpswaifu)`,
+            ],
+            socialMedia: [`> ${Emojis.instagram}・[${bold("@honkaistar.indo")}](https://instagram.com/honkaistar.indo)`],
+        };
+    }
+
+    private async getFieldResponses() {
+        const { devs, networkServers, socialMedia } = await this.getDetails();
+
+        return [
+            { name: "⊰・Developers・⊱", value: devs.join("\n") },
+            { name: "⊰・Network Servers・⊱", value: networkServers.join("\n") },
+            { name: "⊰・Social Media・⊱", value: socialMedia.join("\n") },
+        ] as APIEmbedField[];
     }
 
     private async getUser(id: string): Promise<User> {
