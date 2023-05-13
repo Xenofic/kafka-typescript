@@ -2,7 +2,7 @@ import { PreconditionOptions, AllFlowsPrecondition, Command } from "@sapphire/fr
 import { ApplyOptions } from "@sapphire/decorators";
 import type { Message } from "discord.js";
 
-import { DeveloperIds } from "../lib/Constant";
+import { DeveloperIds } from "../lib/utils/Constant";
 
 @ApplyOptions<PreconditionOptions>({
     name: "DeveloperOnly",

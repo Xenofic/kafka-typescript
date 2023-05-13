@@ -2,7 +2,7 @@ import { Command, RegisterBehavior } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
 import { APIEmbedField, EmbedBuilder, Emoji, Guild, InteractionResponse, Message, SlashCommandBuilder, User, bold } from "discord.js";
 
-import { DeveloperIds, Emojis } from "../../lib/Constant";
+import { DeveloperIds, Emojis } from "../../lib/utils/Constant";
 
 @ApplyOptions<Command.Options>({
     name: "about",

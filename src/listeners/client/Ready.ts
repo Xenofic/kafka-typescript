@@ -3,6 +3,8 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { Time } from "@sapphire/time-utilities";
 import { ActivityType } from "discord.js";
 
+import { Presences } from "../../lib/utils/Constant";
+
 @ApplyOptions<Listener.Options>({
     name: "Ready",
     once: false,
@@ -17,7 +19,7 @@ export class ReadyListener extends Listener {
         client.user.setPresence({
             activities: [
                 {
-                    name: "Interstellaris Indonesia",
+                    name: Presences[0],
                     type: ActivityType.Watching,
                 },
             ],

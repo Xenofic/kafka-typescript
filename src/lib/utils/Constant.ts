@@ -5,4 +5,4 @@ export const Emojis = {
     instagram: "<:ISID_Instagram:1105527817279656047>",
 };
 
-export const Presences: string[] = [];
+export const Presences: string[] = ["Interstellaris Indonesia"];
