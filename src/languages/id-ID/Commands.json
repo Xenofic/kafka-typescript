@@ -1,0 +1,29 @@
+{
+    "Denied": {
+        "Slash_Only": "{{emoji}}・Gunakan slash command untuk menjalankan perintah ini.",
+        "Database_Error": "{{emoji}}・Terjadi galat pada database."
+    },
+    "About": {
+        "Description": "Bot multi-fungsi dan Honkai: Star Rail dari [{{server}}](https://bit.ly/stellaris-indo). Bergabunglah dengan kami dan tingkatkan pengalaman bermain Honkai: Star Rail dan perkuat persahabatan di komunitas game yang lebih luas.",
+        "Fields": {
+            "Name": {
+                "Developers": "⊰・Pengembang・⊱",
+                "Network_Servers": "⊰・Server Mitra・⊱",
+                "Social_Media": "⊰・Media Sosial・⊱"
+            }
+        }
+    },
+    "Language": {
+        "Set": {
+            "Success": "{{emoji}}・Berhasil mengatur bahasa ke {{language}}.",
+            "Error": "{{emoji}}・Terjadi galat ketika mengatur bahasa."           
+        },
+        "List": {
+            "Author": "List Bahasa {{authorName}}",
+            "Description": "Preferensi bahasa untuk server {{guildName}} dapat diganti dengan </language set:1107650035740594208>.",
+            "Fields": {
+                "Name": "⊰・Bahasa yang Tersedia・⊱"
+            }
+        }
+    }
+}

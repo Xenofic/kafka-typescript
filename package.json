@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@prisma/client": "^4.14.0",
     "@sapphire/decorators": "^6.0.1",
     "@sapphire/framework": "^4.4.3",
+    "@sapphire/plugin-i18next": "^5.0.3",
     "@sapphire/plugin-subcommands": "^4.0.1",
     "@sapphire/time-utilities": "^1.7.9",
     "dayjs": "^1.11.7",
@@ -14,7 +16,6 @@
   "version": "1.0.0",
   "description": "Official Bot from Interstellaris Indonesia",
   "main": "dist/index.js",
-  "devDependencies": {},
   "scripts": {
     "start": "tsc --skipLibCheck && node ."
   },

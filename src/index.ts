@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { Client } from "./client";
+import "@sapphire/plugin-i18next/register";
 
-const TOKEN: string = process.env.TOKEN == undefined ? "" : process.env.TOKEN;
+import { Client } from "./lib";
 
-new Client().login(TOKEN);
+void new Client().login(process.env.TOKEN);

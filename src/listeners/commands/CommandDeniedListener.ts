@@ -8,7 +8,9 @@ import {
     ChatInputCommandDeniedPayload,
     ContextMenuCommandDeniedPayload,
 } from "@sapphire/framework";
-import { Message, EmbedBuilder, InteractionResponse, Embed } from "discord.js";
+import { Message, InteractionResponse, Embed } from "discord.js";
+
+import { EmbedBuilder } from "../../lib";
 
 @ApplyOptions<Listener.Options>({
     name: "MessageCommandDenied",
@@ -17,7 +19,7 @@ import { Message, EmbedBuilder, InteractionResponse, Embed } from "discord.js";
 })
 export class MessageCommandDeniedListener extends Listener {
     async run(error: UserError, data: MessageCommandDeniedPayload): Promise<Message> {
-        const embed: EmbedBuilder = new EmbedBuilder();
+        const embed: EmbedBuilder = new EmbedBuilder().isErrorEmbed();
 
         switch (error.identifier) {
             case Identifiers.PreconditionCooldown:
@@ -90,7 +92,7 @@ export class ChatInputCommandDeniedListener extends Listener {
 })
 export class ContextMenuCommandDeniedListener extends Listener {
     async run(error: UserError, data: ContextMenuCommandDeniedPayload): Promise<InteractionResponse<boolean>> {
-        const embed: EmbedBuilder = new EmbedBuilder();
+        const embed: EmbedBuilder = new EmbedBuilder().isErrorEmbed();
         switch (error.identifier) {
             case Identifiers.PreconditionCooldown:
                 embed.setDescription("🛑・The command you are using is on cooldown!");

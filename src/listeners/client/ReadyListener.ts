@@ -1,6 +1,5 @@
 import { Events, Listener } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
-import { Time } from "@sapphire/time-utilities";
 import { ActivityType } from "discord.js";
 
 import { Presences } from "../../lib/utils/Constant";

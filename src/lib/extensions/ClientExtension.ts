@@ -1,6 +1,11 @@
+import "@sapphire/plugin-i18next/register";
 import { LogLevel, SapphireClient } from "@sapphire/framework";
 import { Time } from "@sapphire/time-utilities";
+import { InternationalizationContext } from "@sapphire/plugin-i18next";
+import { PrismaClient } from "@prisma/client";
 import { Partials } from "discord.js";
+
+const prisma: PrismaClient = new PrismaClient();
 
 export class Client extends SapphireClient {
     public constructor() {
@@ -10,11 +15,24 @@ export class Client extends SapphireClient {
             },
             caseInsensitiveCommands: true,
             caseInsensitivePrefixes: true,
-            defaultPrefix: "k!",
+            defaultPrefix: "kaf" || "kaf ",
             defaultCooldown: {
                 delay: Time.Second * 3,
             },
             enableLoaderTraceLoggings: false,
+            i18n: {
+                fetchLanguage: async (context: InternationalizationContext) => {
+                    const db = await prisma.guild.findUnique({
+                        where: {
+                            guildId: context.guild.id,
+                        },
+                    });
+
+                    if (!db) return "en-US";
+
+                    return db.language ?? "en-US";
+                },
+            },
             intents: [
                 "AutoModerationConfiguration",
                 "AutoModerationExecution",
@@ -42,7 +60,7 @@ export class Client extends SapphireClient {
                 level: LogLevel.Debug,
             },
             partials: [Partials.Channel, Partials.GuildMember, Partials.Message, Partials.Reaction],
-            typing: false,
+            typing: true,
         });
     }
 

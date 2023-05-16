@@ -1,0 +1,29 @@
+{
+    "Denied": {
+        "Slash_Only": "{{emoji}}・Use slash command to run this command.",
+        "Database_Error": "{{emoji}}・An error occurred in the database."
+    },  
+    "About": {
+        "Description": "All-multi purpose & Honkai: Star Rail related bot from [{{server}}](https://bit.ly/stellaris-indo). Join us and enhance the experience of playing Honkai: Star Rail and strengthen friendships in the wider game community.",
+        "Fields": {
+            "Name": {
+                "Developers": "⊰・Developers・⊱",
+                "Network_Servers": "⊰・Network Servers・⊱",
+                "Social_Media": "⊰・Social Media・⊱"
+            }
+        }
+    },
+    "Language": {
+        "Set": {
+            "Success": "{{emoji}}・Successfully set the language to {{language}}.",
+            "Error": "{{emoji}}・Failed to set the language."
+        },
+        "List": {
+            "Author": "{{authorName}}'s Language List",
+            "Description": "The language preference for the {{guildName}} server can be changed using </language set:1107650035740594208>.",
+            "Fields": {
+                "Name": "⊰・Available Languages・⊱"
+            }
+        }
+    }
+}

@@ -10,6 +10,11 @@ import { Message } from "discord.js";
     preconditions: ["DeveloperOnly"],
 })
 export class SayCommand extends Command {
+    /**
+     * @description message command executor
+     * @param message message interaction
+     * @returns {Message}
+     */
     public override async messageRun(message: Message, args: Args): Promise<Message> {
         const content: string = await args.rest("string");
 
