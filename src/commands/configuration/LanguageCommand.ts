@@ -167,7 +167,7 @@ export class LanguageCommand extends Subcommand {
                     set: {
                         success: tFunction("Commands:Language:Set:Success", {
                             emoji: Emojis.checkmark,
-                            language: await languages[`${langKey}`],
+                            language: languages[langKey],
                         }),
                         failed: tFunction("Commands:Language:Set:Failed", { emoji: Emojis.redcross }),
                     },
