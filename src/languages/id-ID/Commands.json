@@ -16,7 +16,7 @@
     "Language": {
         "Set": {
             "Success": "{{emoji}}・Berhasil mengatur bahasa ke {{language}}.",
-            "Error": "{{emoji}}・Terjadi galat ketika mengatur bahasa."           
+            "Failed": "{{emoji}}・Anda sudah menggunakan bahasa ini."           
         },
         "List": {
             "Author": "List Bahasa {{authorName}}",

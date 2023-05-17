@@ -107,6 +107,8 @@ export class LanguageCommand extends Subcommand {
             }
         }
 
+        if (db.language == langKey) return ctx.reply({ embeds: [new EmbedBuilder().setDescription(language.set.failed).isErrorEmbed()] });
+
         try {
             await prisma.guild.update({ where: { guildId: ctx.guild.id }, data: { language: langKey } });
         } catch (e) {
@@ -152,7 +154,7 @@ export class LanguageCommand extends Subcommand {
 
         const languages = {
             "id-ID": "Bahasa Indonesia",
-            "en-us": "English US",
+            "en-US": "English US",
         };
 
         return {
@@ -163,8 +165,11 @@ export class LanguageCommand extends Subcommand {
                 },
                 language: {
                     set: {
-                        success: tFunction("Commands:Language:Set:Success", { emoji: Emojis.checkmark, language: languages[langKey] }),
-                        error: tFunction("Commands:Language:Set:Error", { emoji: Emojis.redcross }),
+                        success: tFunction("Commands:Language:Set:Success", {
+                            emoji: Emojis.checkmark,
+                            language: await languages[`${langKey}`],
+                        }),
+                        failed: tFunction("Commands:Language:Set:Failed", { emoji: Emojis.redcross }),
                     },
                     list: {
                         author: tFunction("Commands:Language:List:Author", { authorName: this.container.client.user.username }),
@@ -189,7 +194,7 @@ interface TranslatedResponsesType {
         language: {
             set: {
                 success: string;
-                error: string;
+                failed: string;
             };
             list: {
                 author: string;

@@ -16,7 +16,7 @@
     "Language": {
         "Set": {
             "Success": "{{emoji}}・Successfully set the language to {{language}}.",
-            "Error": "{{emoji}}・Failed to set the language."
+            "Failed": "{{emoji}}・You already using thi language."
         },
         "List": {
             "Author": "{{authorName}}'s Language List",
