@@ -1,13 +1,14 @@
 import { RegisterBehavior } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
 import { ApplyOptions } from "@sapphire/decorators";
-import { TFunction, fetchT, resolveKey } from "@sapphire/plugin-i18next";
+import { TFunction, fetchT } from "@sapphire/plugin-i18next";
 import { PrismaClient } from "@prisma/client";
 import { InteractionResponse, Message, SlashCommandBuilder } from "discord.js";
 
-import { Languages, LanguagesType, EmbedBuilder, Emojis } from "../../lib";
+import { Languages, LanguagesType, EmbedBuilder } from "../../lib";
 
 const prisma: PrismaClient = new PrismaClient();
+const embed: EmbedBuilder = new EmbedBuilder();
 
 @ApplyOptions<Subcommand.Options>({
     name: "language",
@@ -58,7 +59,7 @@ export class LanguageCommand extends Subcommand {
     public async messageRun(message: Message): Promise<void> {
         const { denied } = (await this.getTranslatedResponses(message)).commands;
 
-        await message.reply({ embeds: [new EmbedBuilder().isErrorEmbed().setDescription(denied.slashOnly)] });
+        await message.reply({ embeds: [embed.isErrorEmbed().setDescription(denied.slashOnly)] });
     }
 
     /**
@@ -92,33 +93,28 @@ export class LanguageCommand extends Subcommand {
         const db = await prisma.guild.findUnique({ where: { guildId: ctx.guild.id } });
 
         if (!db) {
-            try {
-                await prisma.guild.create({ data: { guildId: ctx.guild.id, language: langKey } });
-            } catch (e) {
+            await prisma.guild.create({ data: { guildId: ctx.guild.id, language: langKey } }).catch(async (e) => {
                 console.error(e);
-
-                return ctx.reply({
-                    embeds: [new EmbedBuilder().setDescription(denied.databaseError).isErrorEmbed()],
+                return await ctx.reply({
+                    embeds: [embed.setDescription(denied.databaseError).isErrorEmbed()],
                 });
-            } finally {
-                return ctx.reply({
-                    embeds: [new EmbedBuilder().setDescription(language.set.success).isSuccessEmbed()],
-                });
-            }
-        }
+            });
 
-        if (db.language == langKey) return ctx.reply({ embeds: [new EmbedBuilder().setDescription(language.set.failed).isErrorEmbed()] });
-
-        try {
-            await prisma.guild.update({ where: { guildId: ctx.guild.id }, data: { language: langKey } });
-        } catch (e) {
-            console.error(e);
-            return ctx.reply({ embeds: [new EmbedBuilder().setDescription(denied.databaseError).isErrorEmbed()] });
-        } finally {
-            return ctx.reply({
-                embeds: [new EmbedBuilder().setDescription(language.set.success).isSuccessEmbed()],
+            return await ctx.reply({
+                embeds: [embed.setDescription(language.set.success).isSuccessEmbed()],
             });
         }
+
+        if (db.language == langKey) return ctx.reply({ embeds: [embed.setDescription(language.set.failed).isErrorEmbed()] });
+
+        await prisma.guild.update({ where: { guildId: ctx.guild.id }, data: { language: langKey } }).catch(async (e) => {
+            console.error(e);
+            return ctx.reply({ embeds: [embed.setDescription(denied.databaseError).isErrorEmbed()] });
+        });
+
+        return await ctx.reply({
+            embeds: [embed.setDescription(language.set.success).isSuccessEmbed()],
+        });
     }
 
     /**
@@ -130,9 +126,9 @@ export class LanguageCommand extends Subcommand {
         const { user } = this.container.client;
         const { language } = (await this.getTranslatedResponses(ctx)).commands;
 
-        return ctx.reply({
+        return await ctx.reply({
             embeds: [
-                new EmbedBuilder()
+                embed
                     .setAuthor({ name: language.list.author, iconURL: user.displayAvatarURL({ size: 1024 }) })
                     .setDescription(language.list.description)
                     .addFields([{ name: language.list.field.name, value: language.list.field.value }]),
@@ -144,7 +140,7 @@ export class LanguageCommand extends Subcommand {
      * @description get translated responses
      * @param ctx interaction context
      * @param langKey? internation language code
-     * @returns {}
+     * @returns {TranslatedResponsesType}
      */
     private async getTranslatedResponses(
         ctx: Message | Subcommand.ChatInputCommandInteraction,
@@ -160,16 +156,13 @@ export class LanguageCommand extends Subcommand {
         return {
             commands: {
                 denied: {
-                    slashOnly: tFunction("Commands:Denied:Slash_Only", { emoji: Emojis.redcross }),
-                    databaseError: tFunction("Commands:Denied:Database_Error", { emoji: Emojis.redcross }),
+                    slashOnly: tFunction("Commands:Denied:Slash_Only"),
+                    databaseError: tFunction("Commands:Denied:Database_Error"),
                 },
                 language: {
                     set: {
-                        success: tFunction("Commands:Language:Set:Success", {
-                            emoji: Emojis.checkmark,
-                            language: languages[langKey],
-                        }),
-                        failed: tFunction("Commands:Language:Set:Failed", { emoji: Emojis.redcross }),
+                        success: tFunction("Commands:Language:Set:Success", { language: languages[langKey] }),
+                        failed: tFunction("Commands:Language:Set:Failed"),
                     },
                     list: {
                         author: tFunction("Commands:Language:List:Author", { authorName: this.container.client.user.username }),

@@ -18,7 +18,7 @@ import { EmbedBuilder } from "../../lib";
     event: Events.MessageCommandDenied,
 })
 export class MessageCommandDeniedListener extends Listener {
-    async run(error: UserError, data: MessageCommandDeniedPayload): Promise<Message> {
+    public async run(error: UserError, data: MessageCommandDeniedPayload): Promise<Message> {
         const embed: EmbedBuilder = new EmbedBuilder().isErrorEmbed();
 
         switch (error.identifier) {
@@ -55,7 +55,7 @@ export class MessageCommandDeniedListener extends Listener {
     event: Events.ChatInputCommandDenied,
 })
 export class ChatInputCommandDeniedListener extends Listener {
-    async run(error: UserError, data: ChatInputCommandDeniedPayload): Promise<InteractionResponse<boolean>> {
+    public async run(error: UserError, data: ChatInputCommandDeniedPayload): Promise<InteractionResponse<boolean>> {
         const embed: EmbedBuilder = new EmbedBuilder();
         switch (error.identifier) {
             case Identifiers.PreconditionCooldown:
@@ -91,7 +91,7 @@ export class ChatInputCommandDeniedListener extends Listener {
     event: Events.ContextMenuCommandDenied,
 })
 export class ContextMenuCommandDeniedListener extends Listener {
-    async run(error: UserError, data: ContextMenuCommandDeniedPayload): Promise<InteractionResponse<boolean>> {
+    public async run(error: UserError, data: ContextMenuCommandDeniedPayload): Promise<InteractionResponse<boolean>> {
         const embed: EmbedBuilder = new EmbedBuilder().isErrorEmbed();
         switch (error.identifier) {
             case Identifiers.PreconditionCooldown:

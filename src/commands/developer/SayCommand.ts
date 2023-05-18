@@ -19,6 +19,6 @@ export class SayCommand extends Command {
         const content: string = await args.rest("string");
 
         void message.delete();
-        return message.channel.send({ content, allowedMentions: { parse: [] } });
+        return await message.channel.send({ content, allowedMentions: { parse: [] } });
     }
 }

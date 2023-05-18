@@ -11,8 +11,9 @@ datasource db {
 }
 
 model User {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String
+  balance BigInt?
 
   @@unique([userId])
 }
@@ -21,6 +22,18 @@ model Guild {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
   guildId  String
   language String? @default("en-US")
+
+  @@unique([guildId])
+}
+
+model Afk {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  guildId String
+  userId  String
+
+  afkReason    String?
+  afkTimestamp DateTime? @default(now())
+  lastNickname String?
 
   @@unique([guildId])
 }

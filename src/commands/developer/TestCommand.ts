@@ -16,6 +16,6 @@ export class TestCommand extends Command {
      * @returns {Message}
      */
     public async messageRun(message: Message): Promise<Message> {
-        return message.reply({ content: "Test!" });
+        return await message.reply({ content: "Test!" });
     }
 }

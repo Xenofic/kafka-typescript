@@ -12,6 +12,7 @@ export class Client extends SapphireClient {
         super({
             allowedMentions: {
                 parse: ["roles", "users"],
+                repliedUser: true,
             },
             caseInsensitiveCommands: true,
             caseInsensitivePrefixes: true,

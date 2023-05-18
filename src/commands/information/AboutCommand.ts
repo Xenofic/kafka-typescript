@@ -55,7 +55,7 @@ export class AboutCommand extends Command {
         const { about } = (await this.getTranslatedResponses(ctx)).commands;
         const getFieldResponses: APIEmbedField[] = await this.getFieldResponses(ctx);
 
-        return ctx.reply({
+        return await ctx.reply({
             embeds: [
                 new EmbedBuilder()
                     .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ size: 1024 }) })

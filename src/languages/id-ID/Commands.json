@@ -1,7 +1,7 @@
 {
     "Denied": {
-        "Slash_Only": "{{emoji}}・Gunakan slash command untuk menjalankan perintah ini.",
-        "Database_Error": "{{emoji}}・Terjadi galat pada database."
+        "Slash_Only": "<:red_cross:1083636400689262624>・Gunakan slash command untuk menjalankan perintah ini.",
+        "Database_Error": "<:red_cross:1083636400689262624>・Terjadi galat pada database."
     },
     "About": {
         "Description": "Bot multi-fungsi dan Honkai: Star Rail dari [{{server}}](https://bit.ly/stellaris-indo). Bergabunglah dengan kami dan tingkatkan pengalaman bermain Honkai: Star Rail dan perkuat persahabatan di komunitas game yang lebih luas.",
@@ -13,10 +13,15 @@
             }
         }
     },
+    "Afk": {
+        "Success":"<:checkmark:1080037252765335572>・Berhasil mengatur status AFK Anda.\n> Alasan: {{reason}}",
+        "In_Afk": "<:pin:1107636440998879293>・{{user}} saat ini sedang AFK sejak: <t:{{timestamp}}:R>.\n> Alasan: {{reason}}",
+        "No_Longer_Afk": "👋・Selamat datang {{user}}. Anda sudah kembali dari AFK."
+    },
     "Language": {
         "Set": {
-            "Success": "{{emoji}}・Berhasil mengatur bahasa ke {{language}}.",
-            "Failed": "{{emoji}}・Anda sudah menggunakan bahasa ini."           
+            "Success": "<:checkmark:1080037252765335572>・Berhasil mengatur bahasa ke {{language}}.",
+            "Failed": "<:red_cross:1083636400689262624>・Anda sudah menggunakan bahasa ini."           
         },
         "List": {
             "Author": "List Bahasa {{authorName}}",
