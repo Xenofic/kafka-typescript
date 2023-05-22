@@ -6,9 +6,6 @@ import { InteractionResponse, Message, User, SlashCommandBuilder, GuildMember } 
 
 import { EmbedBuilder } from "../../lib";
 
-const prisma: PrismaClient = new PrismaClient();
-const embed: EmbedBuilder = new EmbedBuilder();
-
 @ApplyOptions<Command.Options>({
     name: "afk",
     description: "Set your afk status.",
@@ -16,6 +13,8 @@ const embed: EmbedBuilder = new EmbedBuilder();
     requiredUserPermissions: ["SendMessages"],
 })
 export class AfkCommand extends Command {
+    private prisma: PrismaClient = new PrismaClient();
+
     /**
      * @description register the application commands
      * @param registry application command registry
@@ -69,7 +68,7 @@ export class AfkCommand extends Command {
         user: User,
         reason: string
     ): Promise<Message | InteractionResponse> {
-        const db = await prisma.afk.findFirst({ where: { guildId: ctx.guild.id, userId: user.id } });
+        const db = await this.prisma.afk.findFirst({ where: { guildId: ctx.guild.id, userId: user.id } });
 
         const member: GuildMember = await ctx.guild.members.fetch(user.id);
         const currentNickname: string = member.nickname || user.username;
@@ -77,8 +76,8 @@ export class AfkCommand extends Command {
         await member.setNickname(`[AFK] ${currentNickname}`).catch(() => {});
 
         if (!db) {
-            await prisma.afk
-                .create({
+            try {
+                await this.prisma.afk.create({
                     data: {
                         userId: user.id,
                         guildId: ctx.guild.id,
@@ -86,17 +85,17 @@ export class AfkCommand extends Command {
                         afkTimestamp: new Date(),
                         lastNickname: currentNickname,
                     },
-                })
-                .catch(async (e) => {
-                    console.error(e);
-                    return await ctx.reply({
-                        embeds: [embed.setDescription(await resolveKey(ctx, "Commands:Denied:Database_Error")).isErrorEmbed()],
-                    });
                 });
 
-            return ctx.reply({
-                content: await resolveKey(ctx, "Commands:Afk:Success", { reason }),
-            });
+                return ctx.reply({
+                    content: await resolveKey(ctx, "Commands:Afk:Success", { reason }),
+                });
+            } catch (e) {
+                console.error(e);
+                return await ctx.reply({
+                    embeds: [new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Denied:Database_Error")).isErrorEmbed()],
+                });
+            }
         }
     }
 }

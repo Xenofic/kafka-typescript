@@ -1,7 +1,10 @@
 {
     "Denied": {
+        "Already_Registered": "<:red_cross:1083636400689262624>・You already registered.",
+        "Database_Error": "<:red_cross:1083636400689262624>・An error occurred in the database.",
+        "Not_Registered": "<:red_cross:1083636400689262624>・You're not registered. Please register first using /register",
         "Slash_Only": "<:red_cross:1083636400689262624>・Use slash command to run this command.",
-        "Database_Error": "<:red_cross:1083636400689262624>・An error occurred in the database."
+        "User_Not_Registered": "<:red_cross:1083636400689262624>・The user is not registered. Please register first using /register"
     },  
     "About": {
         "Description": "All-multi purpose & Honkai: Star Rail related bot from [{{server}}](https://bit.ly/stellaris-indo). Join us and enhance the experience of playing Honkai: Star Rail and strengthen friendships in the wider game community.",
@@ -18,6 +21,9 @@
         "In_Afk": "<:pin:1107636440998879293>・{{user}} is currently AFK since: <t:{{timestamp}}:R>\n> Reason: {{reason}}",
         "No_Longer_Afk": "👋・Welcome back {{user}}, you are no longer AFK."
     },
+    "Give": {
+        "Success": "<:checkmark:1080037252765335572>・Successfully give ${{balance}} to {{target}}."
+    },
     "Language": {
         "Set": {
             "Success": "<:checkmark:1080037252765335572>・Successfully set the language to {{language}}.",
@@ -30,5 +36,11 @@
                 "Name": "⊰・Available Languages・⊱"
             }
         }
+    },
+    "Register": {
+        "Success": "<:checkmark:1080037252765335572>・Successfully register your bank account."
+    },
+    "Wallet": {
+        "Description": "$ {{balance}}"
     }
 }

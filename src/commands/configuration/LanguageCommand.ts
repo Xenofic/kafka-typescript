@@ -1,14 +1,11 @@
 import { RegisterBehavior } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
 import { ApplyOptions } from "@sapphire/decorators";
-import { TFunction, fetchT } from "@sapphire/plugin-i18next";
+import { TFunction, fetchT, resolveKey } from "@sapphire/plugin-i18next";
 import { PrismaClient } from "@prisma/client";
 import { InteractionResponse, Message, SlashCommandBuilder } from "discord.js";
 
 import { Languages, LanguagesType, EmbedBuilder } from "../../lib";
-
-const prisma: PrismaClient = new PrismaClient();
-const embed: EmbedBuilder = new EmbedBuilder();
 
 @ApplyOptions<Subcommand.Options>({
     name: "language",
@@ -21,6 +18,11 @@ const embed: EmbedBuilder = new EmbedBuilder();
     ],
 })
 export class LanguageCommand extends Subcommand {
+    /**
+     * @description prisma client instance
+     */
+    private prisma: PrismaClient = new PrismaClient();
+
     /**
      * @description register the application commands
      * @param registry application command registry
@@ -57,9 +59,9 @@ export class LanguageCommand extends Subcommand {
      * @returns {void}
      */
     public async messageRun(message: Message): Promise<void> {
-        const { denied } = (await this.getTranslatedResponses(message)).commands;
-
-        await message.reply({ embeds: [embed.isErrorEmbed().setDescription(denied.slashOnly)] });
+        await message.reply({
+            embeds: [new EmbedBuilder().isErrorEmbed().setDescription(await resolveKey(message, "Commands:Denied:Slash_Only"))],
+        });
     }
 
     /**
@@ -89,32 +91,47 @@ export class LanguageCommand extends Subcommand {
      * @returns {Message | InteractionResponse}
      */
     private async setLanguage(ctx: Subcommand.ChatInputCommandInteraction, langKey: LanguagesType): Promise<Message | InteractionResponse> {
-        const { language, denied } = (await this.getTranslatedResponses(ctx, langKey)).commands;
-        const db = await prisma.guild.findUnique({ where: { guildId: ctx.guild.id } });
+        const db = await this.prisma.guild.findUnique({ where: { guildId: ctx.guild.id } });
 
         if (!db) {
-            await prisma.guild.create({ data: { guildId: ctx.guild.id, language: langKey } }).catch(async (e) => {
-                console.error(e);
-                return await ctx.reply({
-                    embeds: [embed.setDescription(denied.databaseError).isErrorEmbed()],
-                });
-            });
+            try {
+                await this.prisma.guild.create({ data: { guildId: ctx.guild.id, language: langKey } });
 
-            return await ctx.reply({
-                embeds: [embed.setDescription(language.set.success).isSuccessEmbed()],
+                return await ctx.reply({
+                    embeds: [new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Language:Set")).isSuccessEmbed()],
+                });
+            } catch (e) {
+                void console.error(e);
+
+                return await ctx.reply({
+                    embeds: [new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Denied:Database_Error")).isErrorEmbed()],
+                });
+            }
+        }
+
+        if (db.language == langKey) {
+            return ctx.reply({
+                embeds: [new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Language:Set:Failed")).isErrorEmbed()],
             });
         }
 
-        if (db.language == langKey) return ctx.reply({ embeds: [embed.setDescription(language.set.failed).isErrorEmbed()] });
+        try {
+            await this.prisma.guild.update({ where: { guildId: ctx.guild.id }, data: { language: langKey } });
 
-        await prisma.guild.update({ where: { guildId: ctx.guild.id }, data: { language: langKey } }).catch(async (e) => {
-            console.error(e);
-            return ctx.reply({ embeds: [embed.setDescription(denied.databaseError).isErrorEmbed()] });
-        });
+            return await ctx.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(await resolveKey(ctx, "Commands:Language:Set:Success", { languages: Languages.join("\n") }))
+                        .isSuccessEmbed(),
+                ],
+            });
+        } catch (e) {
+            void console.error(e);
 
-        return await ctx.reply({
-            embeds: [embed.setDescription(language.set.success).isSuccessEmbed()],
-        });
+            return await ctx.reply({
+                embeds: [new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Denied:Database_Error")).isErrorEmbed()],
+            });
+        }
     }
 
     /**
@@ -124,79 +141,22 @@ export class LanguageCommand extends Subcommand {
      */
     private async showList(ctx: Message | Subcommand.ChatInputCommandInteraction): Promise<Message | InteractionResponse> {
         const { user } = this.container.client;
-        const { language } = (await this.getTranslatedResponses(ctx)).commands;
 
         return await ctx.reply({
             embeds: [
-                embed
-                    .setAuthor({ name: language.list.author, iconURL: user.displayAvatarURL({ size: 1024 }) })
-                    .setDescription(language.list.description)
-                    .addFields([{ name: language.list.field.name, value: language.list.field.value }]),
+                new EmbedBuilder()
+                    .setAuthor({
+                        name: await resolveKey(ctx, "Commands:Language:List:Author", { authorName: this.container.client.user.username }),
+                        iconURL: user.displayAvatarURL({ size: 1024 }),
+                    })
+                    .setDescription(await resolveKey(ctx, "Commands:Language:List:Description", { guildName: ctx.guild.name }))
+                    .addFields([
+                        {
+                            name: await resolveKey(ctx, "Commands:Language:List:Fields:Name"),
+                            value: await resolveKey(ctx, "Commands:Language:List:Fields:Value"),
+                        },
+                    ]),
             ],
         });
     }
-
-    /**
-     * @description get translated responses
-     * @param ctx interaction context
-     * @param langKey? internation language code
-     * @returns {TranslatedResponsesType}
-     */
-    private async getTranslatedResponses(
-        ctx: Message | Subcommand.ChatInputCommandInteraction,
-        langKey?: LanguagesType
-    ): Promise<TranslatedResponsesType> {
-        const tFunction: TFunction = await fetchT(ctx);
-
-        const languages = {
-            "id-ID": "Bahasa Indonesia",
-            "en-US": "English US",
-        };
-
-        return {
-            commands: {
-                denied: {
-                    slashOnly: tFunction("Commands:Denied:Slash_Only"),
-                    databaseError: tFunction("Commands:Denied:Database_Error"),
-                },
-                language: {
-                    set: {
-                        success: tFunction("Commands:Language:Set:Success", { language: languages[langKey] }),
-                        failed: tFunction("Commands:Language:Set:Failed"),
-                    },
-                    list: {
-                        author: tFunction("Commands:Language:List:Author", { authorName: this.container.client.user.username }),
-                        description: tFunction("Commands:Language:List:Description", { guildName: ctx.guild.name }),
-                        field: {
-                            name: tFunction("Commands:Language:List:Fields:Name"),
-                            value: Languages.join("\n"),
-                        },
-                    },
-                },
-            },
-        };
-    }
-}
-
-interface TranslatedResponsesType {
-    commands: {
-        denied: {
-            slashOnly: string;
-            databaseError: string;
-        };
-        language: {
-            set: {
-                success: string;
-                failed: string;
-            };
-            list: {
-                author: string;
-                description: string;
-                field: {
-                    name: string;
-                    value: string;
-                };
-            };
-        };
-    };
 }

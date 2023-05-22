@@ -1,7 +1,10 @@
 {
     "Denied": {
+        "Already_Registered": "<:red_cross:1083636400689262624>・Anda sudah terdaftar.",
+        "Database_Error": "<:red_cross:1083636400689262624>・Terjadi galat pada database.",
+        "Not_Registered": "<:red_cross:1083636400689262624>・Kamu tidak terdaftar. Harap daftar terlebih dahulu dengan perintah /register",
         "Slash_Only": "<:red_cross:1083636400689262624>・Gunakan slash command untuk menjalankan perintah ini.",
-        "Database_Error": "<:red_cross:1083636400689262624>・Terjadi galat pada database."
+        "User_Not_Registered": "<:red_cross:1083636400689262624>・User tersebut tidak terdaftar. Harap daftar terlebih dahulu dengan perintah /register"
     },
     "About": {
         "Description": "Bot multi-fungsi dan Honkai: Star Rail dari [{{server}}](https://bit.ly/stellaris-indo). Bergabunglah dengan kami dan tingkatkan pengalaman bermain Honkai: Star Rail dan perkuat persahabatan di komunitas game yang lebih luas.",
@@ -30,5 +33,11 @@
                 "Name": "⊰・Bahasa yang Tersedia・⊱"
             }
         }
+    },
+    "Register": {
+        "Success": "<:checkmark:1080037252765335572>・Berhasil mendaftarkan akun bank."
+    },
+    "Wallet": {
+        "Description": "$ {{balance}}"
     }
 }

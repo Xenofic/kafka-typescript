@@ -1,5 +1,6 @@
 import "dotenv/config";
-import "@sapphire/plugin-i18next/register";
+import "@sapphire/plugin-subcommands/register";
+import "@sapphire/plugin-utilities-store/register";
 
 import { Client } from "./lib";
 
