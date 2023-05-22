@@ -17,7 +17,10 @@
   "description": "Official Bot from Interstellaris Indonesia",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsc --skipLibCheck && node ."
+    "start": "tsc --skipLibCheck && node .",
+    "generate": "prisma generate",
+    "compile": "tsc --skipLibCheck",
+    "migrate-languages": "rm -rf dist/languages && cp -R src/languages dist/"
   },
   "keywords": [
     "discord-bot",
