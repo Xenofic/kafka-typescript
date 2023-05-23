@@ -19,11 +19,11 @@ export class DailyCommand extends Command {
     private prisma: PrismaClient = new PrismaClient();
 
     public override async messageRun(message: Message): Promise<Message> {
-        return;
+        return (await this.daily(message, message.author)) as Message;
     }
 
     public override async chatInputRun(interaction: Command.ChatInputCommandInteraction): Promise<InteractionResponse> {
-        return;
+        return (await this.daily(interaction, interaction.user)) as InteractionResponse;
     }
 
     private async daily(ctx: Message | Command.ChatInputCommandInteraction, user: User): Promise<Message | InteractionResponse> {
