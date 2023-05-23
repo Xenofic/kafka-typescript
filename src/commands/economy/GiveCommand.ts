@@ -27,7 +27,7 @@ export class GiveCommand extends Command {
         const command = new SlashCommandBuilder()
             .setName(this.name)
             .setDescription(this.description)
-            .addUserOption((option) => option.setName("target").setDescription("Provide a target user").setRequired(true))
+            .addUserOption((option) => option.setName("user").setDescription("Provide a target user").setRequired(true))
             .addNumberOption((option) =>
                 option.setName("balance").setDescription("How much balance do you want to give.").setRequired(true).setMinValue(1)
             );
@@ -56,7 +56,7 @@ export class GiveCommand extends Command {
      * @returns {InteractionResponse}
      */
     public override async chatInputRun(interaction: Command.ChatInputCommandInteraction): Promise<InteractionResponse> {
-        const target: User = interaction.options.getUser("target");
+        const target: User = interaction.options.getUser("user");
         const balance: number = interaction.options.getNumber("balance");
         return (await this.give(interaction, interaction.user, target, balance)) as InteractionResponse;
     }
@@ -94,7 +94,9 @@ export class GiveCommand extends Command {
 
             return ctx.reply({
                 embeds: [
-                    new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Give:Success", { balance, target })).isSuccessEmbed(),
+                    new EmbedBuilder()
+                        .setDescription(await resolveKey(ctx, "Commands:Give:Success", { balance, target: `<@${target.id}>` }))
+                        .isSuccessEmbed(),
                 ],
             });
         } catch (e) {

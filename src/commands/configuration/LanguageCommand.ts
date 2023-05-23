@@ -1,7 +1,7 @@
 import { RegisterBehavior } from "@sapphire/framework";
 import { Subcommand } from "@sapphire/plugin-subcommands";
 import { ApplyOptions } from "@sapphire/decorators";
-import { TFunction, fetchT, resolveKey } from "@sapphire/plugin-i18next";
+import { resolveKey } from "@sapphire/plugin-i18next";
 import { PrismaClient } from "@prisma/client";
 import { InteractionResponse, Message, SlashCommandBuilder } from "discord.js";
 
@@ -44,7 +44,7 @@ export class LanguageCommand extends Subcommand {
                             .setRequired(true)
                     )
             )
-            .addSubcommand((subcommand) => subcommand.setName("list").setDescription("List of available language for Kafka."));
+            .addSubcommand((subcommand) => subcommand.setName("list").setDescription("List of available languages for Kafka."));
 
         void registry.registerChatInputCommand(command, {
             behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
