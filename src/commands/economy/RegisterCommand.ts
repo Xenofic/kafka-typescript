@@ -61,7 +61,7 @@ export class RegisterCommand extends Command {
         const db = await this.prisma.user.findUnique({ where: { userId: user.id } });
 
         if (db) {
-            return ctx.reply({
+            return await ctx.reply({
                 embeds: [new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Denied:Already_Registered")).isErrorEmbed()],
             });
         }
@@ -69,7 +69,7 @@ export class RegisterCommand extends Command {
         try {
             await this.prisma.user.create({ data: { userId: user.id, balance: 1000 } });
 
-            return ctx.reply({
+            return await ctx.reply({
                 embeds: [new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Register:Success")).isSuccessEmbed()],
             });
         } catch (e) {

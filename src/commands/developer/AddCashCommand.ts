@@ -31,7 +31,7 @@ export class AddCashCommand extends Command {
         const targetDb = await this.prisma.user.findUnique({ where: { userId: target.id } });
 
         if (!targetDb) {
-            return message.reply({
+            return await message.reply({
                 embeds: [
                     new EmbedBuilder().setDescription(await resolveKey(message, "Commands:Denied:User_Not_Registered")).isErrorEmbed(),
                 ],

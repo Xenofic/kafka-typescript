@@ -87,7 +87,7 @@ export class AfkCommand extends Command {
                     },
                 });
 
-                return ctx.reply({
+                return await ctx.reply({
                     content: await resolveKey(ctx, "Commands:Afk:Success", { reason }),
                 });
             } catch (e) {

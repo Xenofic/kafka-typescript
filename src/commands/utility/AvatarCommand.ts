@@ -1,6 +1,6 @@
 import { Command, Args, RegisterBehavior } from "@sapphire/framework";
 import { ApplyOptions } from "@sapphire/decorators";
-import { InteractionResponse, SlashCommandBuilder, User, Message, GuildMember } from "discord.js";
+import { InteractionResponse, SlashCommandBuilder, User, Message, GuildMember, Embed } from "discord.js";
 
 import { EmbedBuilder } from "../../lib";
 
@@ -48,24 +48,18 @@ export class AvatarCommand extends Command {
     private async showAvatar(ctx: Message | Command.ChatInputCommandInteraction, user: User): Promise<Message | InteractionResponse> {
         const userInGuild: GuildMember = await ctx.guild.members.fetch(user.id);
 
-        const avatars: EmbedBuilder[] =
-            user.displayAvatarURL() !== userInGuild.displayAvatarURL()
-                ? [
-                      new EmbedBuilder()
-                          .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ size: 512 }) })
-                          .setDescription(`Link: [**Global Avatar URL**](${user.avatarURL({ size: 4096 })})`)
-                          .setImage(user.displayAvatarURL({ size: 4096 })),
-                      new EmbedBuilder()
-                          .setImage(userInGuild.displayAvatarURL({ size: 4096 }))
-                          .setDescription(`Link: [**Server Avatar URL**](${userInGuild.avatarURL({ size: 4096 })})`),
-                  ]
-                : [
-                      new EmbedBuilder()
-                          .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ size: 512 }) })
-                          .setDescription(`Link: [**Global Avatar URL**](${user.avatarURL({ size: 4096 })})`)
-                          .setImage(user.displayAvatarURL({ size: 4096 })),
-                  ];
+        const globalAvatarEmbed: EmbedBuilder = new EmbedBuilder()
+            .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ size: 512 }) })
+            .setDescription(`Link: [**Global Avatar URL**](${user.avatarURL({ size: 4096 })})`)
+            .setImage(user.displayAvatarURL({ size: 4096 }));
 
-        return ctx.reply({ embeds: [...avatars] });
+        const serverAvatarEmbed: EmbedBuilder = new EmbedBuilder()
+            .setImage(userInGuild.displayAvatarURL({ size: 4096 }))
+            .setDescription(`Link: [**Server Avatar URL**](${userInGuild.avatarURL({ size: 4096 })})`);
+
+        const avatars: EmbedBuilder[] =
+            user.displayAvatarURL() !== userInGuild.displayAvatarURL() ? [globalAvatarEmbed, serverAvatarEmbed] : [globalAvatarEmbed];
+
+        return await ctx.reply({ embeds: [...avatars] });
     }
 }

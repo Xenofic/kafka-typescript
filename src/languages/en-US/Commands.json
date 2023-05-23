@@ -21,6 +21,9 @@
         "In_Afk": "<:pin:1107636440998879293>・{{user}} is currently AFK since: <t:{{timestamp}}:R>\n> Reason: {{reason}}",
         "No_Longer_Afk": "👋・Welcome back {{user}}, you are no longer AFK."
     },
+    "Daily": {
+        "Success": "<:checkmark:1080037252765335572>・Successfully claim your daily rewards. You get {{rewards}} Stellar Coins."
+    },
     "Give": {
         "Success": "<:checkmark:1080037252765335572>・Successfully give ${{balance}} to {{target}}."
     },
@@ -41,6 +44,6 @@
         "Success": "<:checkmark:1080037252765335572>・Successfully register your bank account."
     },
     "Wallet": {
-        "Description": "$ {{balance}}"
+        "Description": "{{balance}} Stellar Coins."
     }
 }

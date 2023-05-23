@@ -21,6 +21,9 @@
         "In_Afk": "<:pin:1107636440998879293>・{{user}} saat ini sedang AFK sejak: <t:{{timestamp}}:R>.\n> Alasan: {{reason}}",
         "No_Longer_Afk": "👋・Selamat datang {{user}}. Anda sudah kembali dari AFK."
     },
+    "Daily": {
+        "Success": "<:checkmark:1080037252765335572>・Berhasil claim hadiah harian. Kamu mendapat {{rewards}} Stellar Coins."
+    },
     "Language": {
         "Set": {
             "Success": "<:checkmark:1080037252765335572>・Berhasil mengatur bahasa ke {{language}}.",
@@ -38,6 +41,6 @@
         "Success": "<:checkmark:1080037252765335572>・Berhasil mendaftarkan akun bank."
     },
     "Wallet": {
-        "Description": "$ {{balance}}"
+        "Description": "{{balance}} Stellar Coins"
     }
 }

@@ -77,13 +77,13 @@ export class GiveCommand extends Command {
         const targetDb = await this.prisma.user.findUnique({ where: { userId: target.id } });
 
         if (!userDb) {
-            return ctx.reply({
+            return await ctx.reply({
                 embeds: [new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Denied:Not_Registered")).isErrorEmbed()],
             });
         }
 
         if (!targetDb) {
-            return ctx.reply({
+            return await ctx.reply({
                 embeds: [new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Denied:User_Not_Registered")).isErrorEmbed()],
             });
         }
@@ -92,7 +92,7 @@ export class GiveCommand extends Command {
             await this.prisma.user.update({ where: { userId: user.id }, data: { balance: { decrement: balance } } });
             await this.prisma.user.update({ where: { userId: target.id }, data: { balance: { increment: balance } } });
 
-            return ctx.reply({
+            return await ctx.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(await resolveKey(ctx, "Commands:Give:Success", { balance, target: `<@${target.id}>` }))

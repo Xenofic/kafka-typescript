@@ -62,12 +62,12 @@ export class WalletCommand extends Command {
         const db = await this.prisma.user.findUnique({ where: { userId: user.id } });
 
         if (!db) {
-            return ctx.reply({
+            return await ctx.reply({
                 embeds: [new EmbedBuilder().setDescription(await resolveKey(ctx, "Commands:Denied:Not_Registered")).isErrorEmbed()],
             });
         }
 
-        return ctx.reply({
+        return await ctx.reply({
             embeds: [
                 new EmbedBuilder().setDescription(
                     await resolveKey(ctx, "Commands:Wallet:Description", { balance: db.balance.toLocaleString("us") })
